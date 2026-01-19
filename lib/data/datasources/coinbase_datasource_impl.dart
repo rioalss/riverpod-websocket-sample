@@ -1,16 +1,28 @@
 // data/datasources/coinbase_websocket_datasource_impl.dart
 import 'dart:async';
 import 'package:dartz/dartz.dart';
+import 'package:example_websocket/core/config/app_config.dart';
 import 'package:example_websocket/core/service/network/websocket_status.dart';
 import 'package:example_websocket/data/datasources/coinbase_datasource.dart';
 import 'package:example_websocket/core/service/network/websocket_service.dart';
 import 'package:example_websocket/data/models/coinbase_status_model.dart';
 import 'package:example_websocket/data/models/coinbase_ticker_model.dart';
 import 'package:flutter/foundation.dart';
-import 'package:injectable/injectable.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-@LazySingleton(as: CoinbaseDatasource)
+final coinbaseDatasourceProvider =
+    Provider<CoinbaseDatasourceImpl>((ref) {
+  final websocketService =
+      ref.watch(websocketServiceProvider(AppConfig.baseUrlWebsocket));
+
+  return CoinbaseDatasourceImpl(
+    ref: ref,
+    websocketService: websocketService,
+  );
+});
+
 class CoinbaseDatasourceImpl implements CoinbaseDatasource {
+  final Ref ref;
   final WebsocketService _websocketService;
 
   final Map<String, StreamController<Either<String, CoinbaseTickerModel>>>
@@ -20,7 +32,10 @@ class CoinbaseDatasourceImpl implements CoinbaseDatasource {
   StreamSubscription<Map<String, dynamic>>? _messageSubscription;
   StreamSubscription<WebsocketStatus>? _statusSubscription;
 
-  CoinbaseDatasourceImpl(this._websocketService) {
+  CoinbaseDatasourceImpl({
+    required this.ref,
+    required WebsocketService websocketService,
+  }) : _websocketService = websocketService {
     _initStreams();
     _listenToWebSocketMessages();
     _listenToStatusChanges();

@@ -1,24 +1,26 @@
 import 'dart:async';
 
 import 'package:dartz/dartz.dart';
-import 'package:example_websocket/core/di/injection.dart';
 import 'package:example_websocket/core/usecase/usecase.dart';
 import 'package:example_websocket/domain/entities/coinbase_status_entity.dart';
 import 'package:example_websocket/domain/usecase/get_coinbase_status_usecase.dart';
 import 'package:example_websocket/features/feature%201/state/coinbase_status_state.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
 final coinbaseStatusProvider =
     StateNotifierProvider<CoinbaseStatusNotifier, CoinbaseStatusState>(
-  (ref) => CoinbaseStatusNotifier(),
+  (ref) => CoinbaseStatusNotifier(ref),
 );
 
 class CoinbaseStatusNotifier extends StateNotifier<CoinbaseStatusState> {
   StreamSubscription<Either<String, CoinbaseStatusEntity>>? _subscription;
   CoinbaseStatusEntity? _cachedProducts;
+  final Ref ref;
 
-  CoinbaseStatusNotifier() : super(const CoinbaseStatusState.initial()) {
+  CoinbaseStatusNotifier(this.ref)
+      : super(const CoinbaseStatusState.initial()) {
     _init();
   }
 
@@ -26,7 +28,7 @@ class CoinbaseStatusNotifier extends StateNotifier<CoinbaseStatusState> {
     debugPrint('🔄 _init() called');
     state = const CoinbaseStatusState.loading();
 
-    final usecase = getIt<GetCoinbaseStatusUsecase>();
+    final usecase = ref.read(getCoinbaseStatusUsecaseProvider);
     debugPrint('✅ Usecase ready');
 
     _cleanup();
@@ -36,7 +38,7 @@ class CoinbaseStatusNotifier extends StateNotifier<CoinbaseStatusState> {
 
     _subscription = stream.listen(
       (event) {
-        debugPrint('📡 STREAM EVENT: $event'); 
+        debugPrint('📡 STREAM EVENT: $event');
         event.fold(_setError, _setData);
       },
       onError: (e) {

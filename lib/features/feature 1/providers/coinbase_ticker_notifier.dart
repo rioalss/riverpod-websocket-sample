@@ -1,30 +1,33 @@
 import 'dart:async';
 
 import 'package:dartz/dartz.dart';
-import 'package:example_websocket/core/di/injection.dart';
 import 'package:example_websocket/domain/entities/coinbase_ticker_entity.dart';
 import 'package:example_websocket/domain/usecase/get_coinbase_ticker_usecase.dart';
 import 'package:example_websocket/features/feature%201/state/coinbase_ticker_state.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
 final coinbaseTickerProvider = StateNotifierProvider.family<
     CoinbaseTickerNotifier, CoinbaseTickerState, String>((ref, productId) {
-  return CoinbaseTickerNotifier(productId);
+  return CoinbaseTickerNotifier(productId: productId, ref: ref);
 });
 
 class CoinbaseTickerNotifier extends StateNotifier<CoinbaseTickerState> {
   StreamSubscription<Either<String, CoinbaseTickerEntity>>? _subscription;
   CoinbaseTickerEntity? _cachedTicker;
   final String productId;
+  final Ref ref;
 
-  CoinbaseTickerNotifier(this.productId)
-      : super(CoinbaseTickerState.initial(productId)) {
+  CoinbaseTickerNotifier({
+    required this.productId,
+    required this.ref,
+  }) : super(CoinbaseTickerState.initial(productId)) {
     _init();
   }
 
   void _init() {
     state = const CoinbaseTickerState.loading();
-    final usecase = getIt<GetCoinbaseTickerUsecase>();
+    final usecase = ref.read(getCoinbaseTickerUsecaseProvider);
 
     _subscription?.cancel();
     _subscription = usecase(productId).listen((event) {

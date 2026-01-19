@@ -7,3 +7,5 @@ abstract class CoinbaseRepositories {
       String productId);
   Stream<Either<String, CoinbaseStatusEntity>> subscribeStatus();
 }
+
+
