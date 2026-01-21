@@ -1,6 +1,6 @@
 // features/feature_1/providers/coinbase_states.dart
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../../../domain/entities/coinbase_status_entity.dart';
+import '../../../domain/entities/coinbase/coinbase_status_entity.dart';
 
 part 'coinbase_status_state.freezed.dart';
 

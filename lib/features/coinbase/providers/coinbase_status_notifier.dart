@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:dartz/dartz.dart';
 import 'package:example_websocket/core/usecase/usecase.dart';
-import 'package:example_websocket/domain/entities/coinbase_status_entity.dart';
+import 'package:example_websocket/domain/entities/coinbase/coinbase_status_entity.dart';
 import 'package:example_websocket/domain/usecase/get_coinbase_status_usecase.dart';
-import 'package:example_websocket/features/feature%201/state/coinbase_status_state.dart';
+import 'package:example_websocket/features/coinbase/state/coinbase_status_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';

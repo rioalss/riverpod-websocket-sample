@@ -1,6 +1,6 @@
 // features/feature_1/screen/coin_ticker_screen.dart
-import 'package:example_websocket/features/feature%201/providers/coinbase_ticker_notifier.dart';
-import 'package:example_websocket/features/feature%201/state/coinbase_ticker_state.dart';
+import 'package:example_websocket/features/coinbase/providers/coinbase_ticker_notifier.dart';
+import 'package:example_websocket/features/coinbase/state/coinbase_ticker_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';

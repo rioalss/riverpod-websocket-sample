@@ -3,17 +3,17 @@ import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:example_websocket/core/config/app_config.dart';
 import 'package:example_websocket/core/service/network/websocket_status.dart';
-import 'package:example_websocket/data/datasources/coinbase_datasource.dart';
+import 'package:example_websocket/data/datasources/coinbase/coinbase_datasource.dart';
 import 'package:example_websocket/core/service/network/websocket_service.dart';
-import 'package:example_websocket/data/models/coinbase_status_model.dart';
-import 'package:example_websocket/data/models/coinbase_ticker_model.dart';
+import 'package:example_websocket/data/models/coinbase/coinbase_status_model.dart';
+import 'package:example_websocket/data/models/coinbase/coinbase_ticker_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final coinbaseDatasourceProvider =
     Provider<CoinbaseDatasourceImpl>((ref) {
   final websocketService =
-      ref.watch(websocketServiceProvider(AppConfig.baseUrlWebsocket));
+      ref.watch(websocketServiceProvider(AppConfig.baseUrlWebsocketCoinbase));
 
   return CoinbaseDatasourceImpl(
     ref: ref,

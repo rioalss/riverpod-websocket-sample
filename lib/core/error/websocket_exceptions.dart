@@ -31,6 +31,9 @@ class WebsocketNotConnectedException extends WebsocketException {
 class WebsocketSendException extends WebsocketException {
   WebsocketSendException(String message) : super(message);
 }
+class WebsocketSubscriptionException extends WebsocketException {
+  WebsocketSubscriptionException(String message) : super(message);
+}
 
 class WebsocketReceiveException extends WebsocketException {
   WebsocketReceiveException(String message) : super(message);

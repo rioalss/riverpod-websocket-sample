@@ -1,13 +1,13 @@
 import 'package:dartz/dartz.dart';
 import 'package:example_websocket/core/utils/safe_call.dart';
-import 'package:example_websocket/data/datasources/coinbase_datasource.dart';
-import 'package:example_websocket/data/datasources/coinbase_datasource_impl.dart';
-import 'package:example_websocket/data/models/coinbase_status_model.dart';
-import 'package:example_websocket/data/models/coinbase_ticker_model.dart';
-import 'package:example_websocket/data/mapper/coinbase_status_mapper.dart';
-import 'package:example_websocket/data/mapper/coinbase_ticker_mapper.dart';
-import 'package:example_websocket/domain/entities/coinbase_status_entity.dart';
-import 'package:example_websocket/domain/entities/coinbase_ticker_entity.dart';
+import 'package:example_websocket/data/datasources/coinbase/coinbase_datasource.dart';
+import 'package:example_websocket/data/datasources/coinbase/coinbase_datasource_impl.dart';
+import 'package:example_websocket/data/models/coinbase/coinbase_status_model.dart';
+import 'package:example_websocket/data/models/coinbase/coinbase_ticker_model.dart';
+import 'package:example_websocket/data/mapper/coinbase/coinbase_status_mapper.dart';
+import 'package:example_websocket/data/mapper/coinbase/coinbase_ticker_mapper.dart';
+import 'package:example_websocket/domain/entities/coinbase/coinbase_status_entity.dart';
+import 'package:example_websocket/domain/entities/coinbase/coinbase_ticker_entity.dart';
 import 'package:example_websocket/domain/repositories/coinbase_repositories.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

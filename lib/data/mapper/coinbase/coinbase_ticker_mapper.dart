@@ -1,5 +1,5 @@
-import '../models/coinbase_ticker_model.dart';
-import '../../domain/entities/coinbase_ticker_entity.dart';
+import '../../models/coinbase/coinbase_ticker_model.dart';
+import '../../../domain/entities/coinbase/coinbase_ticker_entity.dart';
 
 extension CoinbaseTickerMapper on CoinbaseTickerModel {
   CoinbaseTickerEntity toEntity() {

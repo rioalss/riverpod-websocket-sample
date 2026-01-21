@@ -1,12 +1,18 @@
-import 'package:example_websocket/features/feature%201/screen/coin_status_screen.dart';
-import 'package:example_websocket/features/feature%201/screen/coin_ticker_screen.dart';
+import 'package:example_websocket/features/chat/screen/chat_screen.dart';
+import 'package:example_websocket/features/coinbase/screen/coin_status_screen.dart';
+import 'package:example_websocket/features/coinbase/screen/coin_ticker_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'route_paths.dart';
 
 final GoRouter router = GoRouter(
-  initialLocation: AppRoute.coinStatus.path,
+  initialLocation: AppRoute.chat.path,
   routes: [
+    GoRoute(
+      path: AppRoute.chat.path,
+      name: AppRoute.chat.name,
+      builder: (context, state) => const ChatScreen(),
+    ),
     GoRoute(
       path: AppRoute.coinStatus.path,
       name: AppRoute.coinStatus.name,

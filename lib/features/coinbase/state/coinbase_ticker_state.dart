@@ -1,6 +1,6 @@
 // features/feature_1/providers/ticker_states.dart
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../../../domain/entities/coinbase_ticker_entity.dart';
+import '../../../domain/entities/coinbase/coinbase_ticker_entity.dart';
 
 part 'coinbase_ticker_state.freezed.dart';
 

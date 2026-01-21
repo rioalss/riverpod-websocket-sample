@@ -1,5 +1,5 @@
-import 'package:example_websocket/data/models/coinbase_status_model.dart';
-import 'package:example_websocket/domain/entities/coinbase_status_entity.dart';
+import 'package:example_websocket/data/models/coinbase/coinbase_status_model.dart';
+import 'package:example_websocket/domain/entities/coinbase/coinbase_status_entity.dart';
 
 extension CoinbaseStatusMapper on CoinbaseStatusModel {
   CoinbaseStatusEntity toEntity() {

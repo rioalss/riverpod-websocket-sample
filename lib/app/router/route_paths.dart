@@ -6,6 +6,10 @@ enum AppRoute {
   coinTicker(
     path: '/coin_ticker/:id',
     name: 'coinTicker',
+  ),
+  chat(
+    path: '/chat',
+    name: 'chat',
   );
 
   const AppRoute({required this.path, required this.name});

@@ -1,4 +1,4 @@
-import 'package:example_websocket/features/feature%201/widgets/coin_status_list_widget.dart';
+import 'package:example_websocket/features/coinbase/widgets/coin_status_list_widget.dart';
 import 'package:flutter/material.dart';
 
 class CoinStatusScreen extends StatefulWidget {
