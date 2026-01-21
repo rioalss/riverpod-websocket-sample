@@ -123,7 +123,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         children: [
           ErrorBannerWidget(message),
           const SizedBox(height: 16),
-          if (cachedData != null) ...[
+          if ((cachedData?.isNotEmpty ?? false)) ...[
             const Text(
               'Last received data:',
               style: TextStyle(fontWeight: FontWeight.bold),
