@@ -7,7 +7,7 @@ class AppConfig {
   static String get baseUrlWebsocketCentrifuge =>
       dotenv.env['API_BASE_URL_CENTRIFUGE'] ?? 'ws://127.0.0.1:8000/connection/websocket';
 
-  static String get apiKey => dotenv.env['API_KEY'] ?? '';
+  static String get googleMapApiKey => dotenv.env['GOOGLE_MAP_API_KEY'] ?? '';
 
   static bool get isProduction => dotenv.env['ENVIRONMENT'] == 'production';
 

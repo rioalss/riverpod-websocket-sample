@@ -98,7 +98,11 @@ class CentrifugeService {
     }
 
     try {
-      final sub = _client!.newSubscription(config.channel);
+      final sub = _client!.getSubscription(config.channel) ??
+          _client!.newSubscription(
+            config.channel,
+          );
+
       debugPrint('✅ Channel: ${sub.channel}');
       final controller = StreamController<T>.broadcast();
 
@@ -108,8 +112,8 @@ class CentrifugeService {
             final json = jsonDecode(
               utf8.decode(event.data),
             ) as Map<String, dynamic>;
-
             controller.add(config.mapper(json));
+            // print(controller.stream);
           } catch (e) {
             controller
                 .addError(WebsocketMessageProcessingException(e.toString()));

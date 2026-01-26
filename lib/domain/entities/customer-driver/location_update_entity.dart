@@ -3,48 +3,58 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class MessageEntity extends Equatable {
-  final String? input;
+class LocationUpdateEntity extends Equatable {
   final int? timestamp;
   final String? type;
   final double? latitude;
   final double? longitude;
   final double? progress;
-  final String? tripId;
+  final double? pickupLatitude;
+  final double? pickupLongitude;
+  final double? dropoffLatitude;
+  final double? dropoffLongitude;
 
-  const MessageEntity({
-    this.input,
+  const LocationUpdateEntity({
     this.timestamp,
     this.type,
     this.latitude,
     this.longitude,
     this.progress,
-    this.tripId,
+    this.pickupLatitude,
+    this.pickupLongitude,
+    this.dropoffLatitude,
+    this.dropoffLongitude,
   });
 
   @override
   List<Object?> get props => [
-    input,
+    
     timestamp,
     type,
     latitude,
     longitude,
     progress,
-    tripId,
+    pickupLatitude,
+    pickupLongitude,
+    dropoffLatitude,
+    dropoffLongitude,
+    
   ];
 
   /// Parse dari Centrifuge chat response
-  factory MessageEntity.fromJson(Map<String, dynamic> json) {
+  factory LocationUpdateEntity.fromJson(Map<String, dynamic> json) {
     final inputJson = jsonDecode(json['input'] ?? '{}');
     
-    return MessageEntity(
-      input: json['input'],
+    return LocationUpdateEntity(
       timestamp: json['timestamp'],
       type: inputJson['type'],
       latitude: inputJson['latitude']?.toDouble(),
       longitude: inputJson['longitude']?.toDouble(),
       progress: inputJson['progress']?.toDouble(),
-      tripId: inputJson['tripId'],
+      pickupLatitude: inputJson['pickupLatitude']?.toDouble(),
+      pickupLongitude: inputJson['pickupLongitude']?.toDouble(),
+      dropoffLatitude: inputJson['dropoffLatitude']?.toDouble(),
+      dropoffLongitude: inputJson['dropoffLongitude']?.toDouble(),
     );
   }
 
@@ -60,7 +70,7 @@ class MessageEntity extends Equatable {
 
   @override
   String toString() {
-    return 'MessageEntity(type: $type, input: $input, timestamp: $timestamp, '
-        'lat: $latitude, lng: $longitude, progress: $progress, tripId: $tripId)';
+    return 'LocationUpdateEntity(type: $type, timestamp: $timestamp, '
+        'lat: $latitude, lng: $longitude, progress: $progress)';
   }
 }

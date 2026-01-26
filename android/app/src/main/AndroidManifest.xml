@@ -1,4 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Location -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- Internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    
     <application
         android:label="${appName}"
         android:name="${applicationName}"
@@ -29,5 +35,9 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        
+        <!-- Google Map -->
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyB9yyvWzowWLflKGxYeyjh18cHxmkH-Y7M"/>
     </application>
 </manifest>

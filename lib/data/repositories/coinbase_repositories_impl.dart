@@ -34,6 +34,7 @@ class CoinbaseRepositoriesImpl implements CoinbaseRepositories {
     return safeCallStream<CoinbaseStatusEntity, CoinbaseStatusModel>(
       streamFactory: () => coinbaseDatasource.subscribeStatus(),
       mapper: (model) => model.toEntity(),
+      filter: (model) => true,
     );
   }
 
@@ -43,6 +44,7 @@ class CoinbaseRepositoriesImpl implements CoinbaseRepositories {
     return safeCallStream<CoinbaseTickerEntity, CoinbaseTickerModel>(
       streamFactory: () => coinbaseDatasource.subscribeTicker(productId),
       mapper: (model) => model.toEntity(),
+      filter: (model) => true,
     );
   }
 }

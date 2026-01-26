@@ -16,9 +16,15 @@ Future<Either<String, T>> safeCall<T, M>({
 
 Stream<Either<String, T>> safeCallStream<T, M>({
   required Stream<Either<String, M>> Function() streamFactory,
+  required bool Function(M model) filter,
   required T Function(M model) mapper,
 }) {
-  return streamFactory().map((event) {
+  return streamFactory().where((event) {
+    return event.fold(
+      (_) => true,
+      (r) => filter(r),
+    );
+  }).map((event) {
     try {
       return event.fold(
         (l) => Left(l),

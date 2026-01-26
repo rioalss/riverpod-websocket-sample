@@ -31,6 +31,7 @@ class ChatRepositoriesImpl implements ChatRepositories {
     return safeCallStream<MessageEntity, MessageModel>(
       streamFactory: () => chatDatasource.subscribeChat(),
       mapper: (json) => json.toEntity(),
+      filter: (model) => true,
     );
   }
 

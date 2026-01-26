@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:example_websocket/core/usecase/usecase.dart';
+import 'package:example_websocket/core/utils/location_util.dart';
 import 'package:example_websocket/domain/entities/chat/message_entity.dart';
 import 'package:example_websocket/domain/usecase/get_chat_usecase.dart';
 import 'package:example_websocket/domain/usecase/get_publish_chat_usecase.dart';
@@ -18,10 +20,12 @@ final chatStatusProvider = StateNotifierProvider<ChatStatusNotifier, ChatState>(
 class ChatStatusNotifier extends StateNotifier<ChatState> {
   StreamSubscription<Either<String, MessageEntity>>? _subscription;
   final List<MessageEntity> _messages = [];
+  Timer? _locationTimer;
   final Ref ref;
 
   ChatStatusNotifier(this.ref) : super(const ChatState.initial()) {
     _init();
+    // startAutoLocation();
   }
 
   void _init() async {
@@ -49,6 +53,45 @@ class ChatStatusNotifier extends StateNotifier<ChatState> {
     );
 
     debugPrint('✅ Subscription active');
+  }
+
+  bool get _isConnected {
+    return state.maybeWhen(
+      data: (_, status) => status == ConnectionStatus.connected,
+      orElse: () => false,
+    );
+  }
+
+  void startAutoLocation() {
+    // ❗ cegah double timer
+    if (_locationTimer?.isActive ?? false) return;
+
+    debugPrint('📍 Auto location started');
+
+    _locationTimer = Timer.periodic(
+      const Duration(seconds: 10),
+      (_) async {
+        if (!_isConnected) return;
+
+        await sendLocation();
+      },
+    );
+  }
+
+  Future<void> sendLocation() async {
+    final result = await LocationUtils.getCurrentLocationDetail();
+
+    await result.fold(
+      (error) async {
+        state = ChatState.error(
+          message: error,
+          cachedData: List.unmodifiable(_messages),
+        );
+      },
+      (location) async {
+        await sendMessage(jsonEncode(location));
+      },
+    );
   }
 
   Future<void> sendMessage(String text) async {
@@ -90,6 +133,7 @@ class ChatStatusNotifier extends StateNotifier<ChatState> {
   }
 
   void _setError(String message) {
+    stopAutoLocation();
     state = ChatState.error(
       message: message,
       cachedData: List.unmodifiable(_messages),
@@ -101,11 +145,18 @@ class ChatStatusNotifier extends StateNotifier<ChatState> {
   @override
   void dispose() {
     _cleanup();
+    stopAutoLocation();
     super.dispose();
   }
 
   Future<void> _cleanup() async {
     await _subscription?.cancel();
     _subscription = null;
+  }
+
+  void stopAutoLocation() {
+    debugPrint('🛑 Auto location stopped');
+    _locationTimer?.cancel();
+    _locationTimer = null;
   }
 }
