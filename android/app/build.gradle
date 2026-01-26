@@ -22,6 +22,52 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+// Dev
+def envDevProperties = new Properties()
+def envDevPropertiesFile = rootProject.file('../.env.dev')
+if (envDevPropertiesFile.exists()) {
+    envDevPropertiesFile.withReader('UTF-8') { reader ->
+        envDevProperties.load(reader)
+    }
+}
+
+def googleMapApiKeyDev = envDevProperties.getProperty('GOOGLE_MAP_API_KEY')
+if (googleMapApiKeyDev==null) {
+    println "⚠️ [DEV] GOOGLE_MAP_API_KEY not found in .env.dev, using dummy key"
+}
+
+// Staging
+def envStagingProperties = new Properties()
+def envStagingPropertiesFile = rootProject.file('../.env.staging')
+if (envStagingPropertiesFile.exists()) {
+    envStagingPropertiesFile.withReader('UTF-8') { reader ->
+        envStagingProperties.load(reader)
+    }
+}
+
+def googleMapApiKeyStaging = envStagingProperties.getProperty('GOOGLE_MAP_API_KEY')
+if (googleMapApiKeyStaging==null) {
+    println "⚠️ [STAGING] GOOGLE_MAP_API_KEY not found in .env.staging, using dummy key"
+}
+
+// Prod
+def envProdProperties = new Properties()
+def envProdPropertiesFile = rootProject.file('../.env.prod')
+if (envProdPropertiesFile.exists()) {
+    envProdPropertiesFile.withReader('UTF-8') { reader ->
+        envProdProperties.load(reader)
+    }
+}
+
+def googleMapApiKeyProd = envProdProperties.getProperty('GOOGLE_MAP_API_KEY')
+if (googleMapApiKeyProd==null) {
+    println "⚠️ [PROD] GOOGLE_MAP_API_KEY not found in .env.prod, using dummy key"
+}
+
+
+
+
+
 android {
     namespace "com.example.example_websocket"
     compileSdkVersion flutter.compileSdkVersion
@@ -57,17 +103,26 @@ android {
         production {
             dimension "default"
             applicationIdSuffix ""
-            manifestPlaceholders = [appName:"Example WebSocket"]
+            manifestPlaceholders = [
+                appName:"Example WebSocket",  
+                GOOGLE_MAP_API_KEY: googleMapApiKeyProd
+                ]
         }
         staging {
             dimension "default"
             applicationIdSuffix ".staging"
-            manifestPlaceholders = [appName:"[STG] Example WebSocket"]
+            manifestPlaceholders = [
+                appName:"[STG] Example WebSocket",  
+                GOOGLE_MAP_API_KEY: googleMapApiKeyStaging
+                ]
         }
         development {
             dimension "default"
             applicationIdSuffix ".dev"
-            manifestPlaceholders = [appName:"[DEV] Example WebSocket"]
+            manifestPlaceholders = [
+                appName:"[DEV] Example WebSocket",  
+                GOOGLE_MAP_API_KEY: googleMapApiKeyDev
+                ]
         }
     }
 
