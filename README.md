@@ -1,49 +1,57 @@
-# Riverpod WebSocket Sample (Coinbase Tracker)
+# Flutter Riverpod Real-Time Sample
 
-A real-time cryptocurrency price tracker built with Flutter, utilizing the Coinbase WebSocket API. This project demonstrates a clean architecture approach with manual dependency injection using Riverpod.
+A comprehensive real-time Flutter application demonstrating clean architecture and diverse real-time communication patterns. This project showcases integration with multiple WebSocket-based services including Coinbase for crypto tracking, Centrifuge for chat, and custom location tracking for delivery services.
 
 ## 🚀 Features
 
-- **Real-time Price Tracking**: Live updates for XRP-USD (and other products) via WebSocket.
-- **Product Status Monitoring**: View the status and details of various trading pairs.
-- **Robust WebSocket Service**: Includes automatic reconnection logic, error handling, and status tracking.
-- **Clean Architecture**: Clear separation of concerns between data, domain, and presentation layers.
-- **Manual Dependency Injection**: Leveraging Riverpod's `Provider` and `Ref` for flexible and testable DI.
+- **Real-time Price Tracking (Coinbase)**: Live updates for trading pairs (e.g., XRP-USD) via standard WebSockets.
+- **Secure Chat System (Centrifuge)**: Real-time messaging using the Centrifuge protocol with JWT authentication.
+- **Customer-Driver Tracking**: Live location monitoring on Google Maps, featuring:
+  - Real-time driver position updates.
+  - Path rendering with polylines.
+  - Distance-based arrival detection.
+- **Robust WebSocket Management**: Centralized service handles automatic reconnection, error handling, and connectivity status.
+- **Clean Architecture**: Strict separation of concerns (Data, Domain, Presentation).
+- **Riverpod State Management**: Modern state handling using `riverpod_generator`, Notifiers, and Providers.
 
 ## 🛠 Tech Stack
 
-- **State Management**: [Riverpod](https://riverpod.dev/) (StateNotifier, Provider, Provider.family)
+- **State Management**: [Riverpod](https://riverpod.dev/) (Notifiers, Generators)
+- **Real-time Protocols**:
+  - [Centrifuge](https://pub.dev/packages/centrifuge) (Chat & Real-time updates)
+  - [web_socket_channel](https://pub.dev/packages/web_socket_channel) (Coinbase Feed)
 - **Data Modeling**: [Freezed](https://pub.dev/packages/freezed) & [JSON Serializable](https://pub.dev/packages/json_serializable)
-- **Functional Programming**: [Dartz](https://pub.dev/packages/dartz) (using `Either` for error handling)
+- **Mapping & Location**:
+  - [google_maps_flutter](https://pub.dev/packages/google_maps_flutter)
+  - [geolocator](https://pub.dev/packages/geolocator)
+  - [flutter_polyline_points](https://pub.dev/packages/flutter_polyline_points)
 - **Navigation**: [GoRouter](https://pub.dev/packages/go_router)
-- **Networking**: [web_socket_channel](https://pub.dev/packages/web_socket_channel)
+- **Functional Programming**: [Dartz](https://pub.dev/packages/dartz) (Either for Error Handling)
 - **Environment Config**: [flutter_dotenv](https://pub.dev/packages/flutter_dotenv)
 
 ## 📁 Project Structure
 
 ```text
 lib/
-├── app/          # App-wide configuration (theme, router)
-├── core/         # Infrastructure and shared utilities
-│   ├── config/   # App constants and environment config
-│   ├── di/       # Dependency injection setup (Riverpod)
-│   ├── error/    # Custom exceptions and failures
-│   └── service/  # Network services (WebSocket)
-├── data/         # Data layer implementation
-│   ├── datasources/ # Remote data sources (WebSocket)
-│   ├── mapper/      # Model to Entity mappers
-│   ├── models/      # Data transfer objects (Freezed)
-│   └── repositories/# Repository implementations
-├── domain/       # Business logic layer
-│   ├── entities/ # Plain data classes
-│   ├── repositories/# Repository interfaces
-│   └── usecase/  # Business logic actions
-└── features/     # Feature-specific UI and state management
-    └── feature 1/
-        ├── providers/ # Notifiers and providers
-        ├── screen/    # Feature screens
-        ├── state/     # UI state models
-        └── widgets/   # Feature widgets
+├── app/          # Global config, router, and app entry
+├── core/         # Infrastructure & Shared Services
+│   ├── service/  # Socket (Centrifuge, WebSockets), Storage, Network
+│   ├── di/       # Provider-based Dependency Injection
+│   ├── config/   # Env constants
+│   └── utils/    # GPS, Formatting, etc.
+├── data/         # Data Layer (Implements Repositories)
+│   ├── datasources/ # API, Socket Clients
+│   ├── models/      # DTOs (Freezed)
+│   └── repositories/# Repository Impls
+├── domain/       # Business Logic Layer (Pure Dart)
+│   ├── entities/    # Domain Objects
+│   ├── repositories/# Interfaces
+│   └── usecase/     # Direct actions
+├── features/     # Feature-oriented UI & Logic
+│   ├── chat/        # Messaging implementation
+│   ├── coinbase/    # Crypto price tracker
+│   └── customer-driver/ # Location tracking & Maps
+└── shared/       # Reusable Widgets & Assets
 ```
 
 ## ⚙️ Getting Started
@@ -51,7 +59,7 @@ lib/
 ### Prerequisites
 
 - Flutter SDK (>= 3.2.6)
-- Dart SDK
+- Google Maps API Key (configured in `AndroidManifest.xml` and `AppDelegate.swift`)
 
 ### Installation
 
@@ -68,14 +76,14 @@ lib/
    flutter pub get
    ```
 
-3. **Set up environment variables**:
-   Copy the example environment file and customize it.
+3. **Environment Setup**:
+   Create `.env.dev` from the example:
 
    ```bash
    cp .env.example .env.dev
    ```
 
-4. **Run code generation**:
+4. **Code Generation**:
 
    ```bash
    dart run build_runner build --delete-conflicting-outputs
@@ -83,20 +91,12 @@ lib/
 
 ## 🏃 Running the App
 
-Run the app in your desired environment:
+Run using different targets:
 
 - **Development**: `flutter run --target lib/main_development.dart`
 - **Staging**: `flutter run --target lib/main_stagging.dart`
 - **Production**: `flutter run --target lib/main_production.dart`
 
-## 🧪 Testing
-
-Run automated tests:
-
-```bash
-flutter test
-```
-
 ---
 > [!NOTE]
-> This project was recently migrated from `get_it` and `injectable` to a pure Riverpod-based dependency injection pattern for better integration with the Flutter lifecycle.
+> This project follows a "Riverpod-first" architecture, eliminating the need for `get_it`. Every service and repository is managed via Providers for better testability and Flutter lifecycle awareness.
